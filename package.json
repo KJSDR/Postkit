@@ -15,6 +15,7 @@
     "postkit-reading-time": "^1.0.0",
     "postkit-search-library": "^1.0.12",
     "postkit-slug": "^1.0.0",
+    "postkit-storage-lib": "^1.0.0",
     "postkit-tag": "^1.0.0",
     "postkit-ui-component-library": "^1.0.5",
     "postkit-validation-library": "^1.0.2",
