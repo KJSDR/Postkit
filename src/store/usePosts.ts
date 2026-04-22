@@ -5,24 +5,12 @@ import { createExcerpt } from 'postkit-excerpt'
 import { readingTime } from 'postkit-reading-time'
 import { parseTags, removeDuplicateTags } from 'postkit-tag'
 import { isPostValid } from 'postkit-validation-library'
+import { savePosts, loadPosts, exportPosts, importPosts } from 'postkit-storage-lib'
 
 const STORAGE_KEY = 'postkit-posts'
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
-}
-
-function load(): Post[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    return []
-  }
-}
-
-function save(posts: Post[]): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts))
 }
 
 function buildPost(id: string, data: PostFormData, existingSlugs: string[], createdAt?: string): Post {
@@ -48,10 +36,10 @@ function buildPost(id: string, data: PostFormData, existingSlugs: string[], crea
 }
 
 export function usePosts() {
-  const [posts, setPosts] = useState<Post[]>(load)
+  const [posts, setPosts] = useState<Post[]>(() => loadPosts(STORAGE_KEY) as Post[])
 
   useEffect(() => {
-    save(posts)
+    savePosts(STORAGE_KEY, posts as Parameters<typeof savePosts>[1])
   }, [posts])
 
   function createPost(data: PostFormData): Post | null {
@@ -78,5 +66,16 @@ export function usePosts() {
     setPosts(prev => prev.filter(p => p.id !== id))
   }
 
-  return { posts, createPost, updatePost, deletePost }
+  function exportAllPosts(): string {
+    return exportPosts(posts as Parameters<typeof exportPosts>[0])
+  }
+
+  function importAllPosts(json: string): boolean {
+    const imported = importPosts(json) as Post[]
+    if (imported.length === 0) return false
+    setPosts(imported)
+    return true
+  }
+
+  return { posts, createPost, updatePost, deletePost, exportAllPosts, importAllPosts }
 }
