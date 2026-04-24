@@ -20,7 +20,8 @@
     "postkit-ui-component-library": "^1.0.5",
     "postkit-validation-library": "^1.0.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@types/react": "^18.3.1",

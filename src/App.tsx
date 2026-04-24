@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Post, PostFormData } from './types/post'
-import { usePosts } from './store/usePosts'
+import { usePostStore } from './store/usePosts'
 import { SearchBar } from './components/SearchBar'
 import { FilterSort, Filters } from './components/FilterSort'
 import { PostList } from './components/PostList'
@@ -12,7 +12,7 @@ import { filterByStatus, filterByTag, sortByDate, sortByTitle } from 'postkit-fi
 type View = 'list' | 'preview' | 'editor'
 
 export function App() {
-  const { posts, createPost, updatePost, deletePost } = usePosts()
+  const { posts, createPost, updatePost, deletePost } = usePostStore()
   const [view, setView] = useState<View>('list')
   const [selected, setSelected] = useState<Post | null>(null)
   const [search, setSearch] = useState('')
