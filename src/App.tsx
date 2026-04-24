@@ -82,29 +82,49 @@ export function App() {
 
   if (view === 'editor') {
     return (
-      <main>
-        <h1>{selected ? 'Edit Post' : 'New Post'}</h1>
-        <PostEditor post={selected ?? undefined} onSave={handleSave} onCancel={handleBack} />
+      <main className="min-h-screen bg-paper">
+        <div className="max-w-2xl mx-auto py-12 px-6">
+          <h1 className="font-sans text-sm text-muted tracking-widest uppercase mb-10">
+            {selected ? 'Edit Post' : 'New Post'}
+          </h1>
+          <PostEditor post={selected ?? undefined} onSave={handleSave} onCancel={handleBack} />
+        </div>
       </main>
     )
   }
 
   if (view === 'preview' && selected) {
     return (
-      <main>
-        <PostPreview post={selected} onEdit={() => setView('editor')} onBack={handleBack} />
-        <button onClick={handleDelete}>Delete</button>
+      <main className="min-h-screen bg-paper">
+        <div className="max-w-2xl mx-auto py-12 px-6">
+          <PostPreview post={selected} onEdit={() => setView('editor')} onBack={handleBack} />
+          <button
+            onClick={handleDelete}
+            className="mt-8 font-sans text-sm text-muted hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-muted rounded transition-colors"
+          >
+            Delete
+          </button>
+        </div>
       </main>
     )
   }
 
   return (
-    <main>
-      <h1>PostKit</h1>
-      <button onClick={handleNew}>+ New Post</button>
-      <SearchBar value={search} onChange={setSearch} />
-      <FilterSort filters={filters} availableTags={allTags} onChange={setFilters} />
-      <PostList posts={visible} onSelect={handleSelect} />
+    <main className="min-h-screen bg-paper">
+      <div className="max-w-2xl mx-auto py-12 px-6">
+        <header className="flex items-center justify-between mb-10">
+          <h1 className="font-sans text-sm text-muted tracking-widest uppercase">PostKit</h1>
+          <button
+            onClick={handleNew}
+            className="font-sans text-sm text-muted hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-muted rounded transition-colors"
+          >
+            + New Post
+          </button>
+        </header>
+        <SearchBar value={search} onChange={setSearch} />
+        <FilterSort filters={filters} availableTags={allTags} onChange={setFilters} />
+        <PostList posts={visible} onSelect={handleSelect} />
+      </div>
     </main>
   )
 }

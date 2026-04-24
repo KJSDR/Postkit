@@ -8,12 +8,12 @@ interface Props {
 }
 
 export function PostList({ posts, onSelect }: Props) {
-  if (posts.length === 0) return <p>No posts found.</p>
+  if (posts.length === 0) return <p className="font-sans text-sm text-muted py-8">No posts found.</p>
 
   return (
-    <ul style={{ listStyle: 'none', padding: 0 }}>
+    <ul className="space-y-6 mt-8">
       {posts.map(post => (
-        <li key={post.id}>
+        <li key={post.id} className="pb-6 border-b border-muted/20 last:border-0">
           <PostCard
             title={post.title}
             author={post.author}
@@ -22,7 +22,9 @@ export function PostList({ posts, onSelect }: Props) {
             createdAt={new Date(post.createdAt)}
             onClick={() => onSelect(post)}
           />
-          <small>{formatDate(post.updatedAt)} — {post.readingTime} min read — {post.tags.map(t => `#${t}`).join(' ')}</small>
+          <small className="font-sans text-sm text-muted block mt-2">
+            {formatDate(post.updatedAt)} — {post.readingTime} min read — {post.tags.map(t => `#${t}`).join(' ')}
+          </small>
         </li>
       ))}
     </ul>

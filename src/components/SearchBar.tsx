@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function SearchBar({ value, onChange }: Props) {
-  return <SearchInput value={value} onChange={onChange} placeholder="Search posts..." debounceMs={300} />
+  return (
+    <div className="mb-6 font-sans text-sm text-ink">
+      <SearchInput value={value} onChange={onChange} placeholder="Search posts..." debounceMs={300} />
+    </div>
+  )
 }

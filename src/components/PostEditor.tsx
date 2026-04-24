@@ -47,49 +47,89 @@ export function PostEditor({ post, onSave, onCancel }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-8">
       {errors.length > 0 && (
-        <ul style={{ color: 'red' }}>
+        <ul className="font-sans text-sm text-red-700 space-y-1">
           {errors.map((e, i) => <li key={i}>{e}</li>)}
         </ul>
       )}
 
-      <div>
-        <label>Title</label>
-        <input value={form.title} onChange={e => set('title', e.target.value)} required />
+      <div className="space-y-1">
+        <label className="block font-sans text-sm text-muted">Title</label>
+        <input
+          value={form.title}
+          onChange={e => set('title', e.target.value)}
+          required
+          className="w-full bg-transparent font-sans text-ink text-lg border-b border-muted/40 focus:outline-none focus-visible:border-ink py-1"
+        />
       </div>
 
-      <div>
-        <label>Author</label>
-        <input value={form.author} onChange={e => set('author', e.target.value)} />
+      <div className="space-y-1">
+        <label className="block font-sans text-sm text-muted">Author</label>
+        <input
+          value={form.author}
+          onChange={e => set('author', e.target.value)}
+          className="w-full bg-transparent font-sans text-ink border-b border-muted/40 focus:outline-none focus-visible:border-ink py-1"
+        />
       </div>
 
-      <div>
-        <label>Body</label>
-        <textarea value={form.body} onChange={e => set('body', e.target.value)} rows={10} required />
+      <div className="space-y-2">
+        <label className="block font-sans text-sm text-muted">Body</label>
+        <textarea
+          value={form.body}
+          onChange={e => set('body', e.target.value)}
+          rows={10}
+          required
+          className="w-full bg-transparent font-serif text-ink text-xl leading-relaxed tracking-wide resize-none focus:outline-none focus-visible:ring-1 focus-visible:ring-muted rounded"
+        />
       </div>
 
-      <div>
-        <label>Tags (comma-separated)</label>
-        <input value={form.tags.join(', ')} onChange={e => handleTagsChange(e.target.value)} />
+      <div className="space-y-1">
+        <label className="block font-sans text-sm text-muted">Tags (comma-separated)</label>
+        <input
+          value={form.tags.join(', ')}
+          onChange={e => handleTagsChange(e.target.value)}
+          className="w-full bg-transparent font-sans text-ink border-b border-muted/40 focus:outline-none focus-visible:border-ink py-1"
+        />
       </div>
 
-      <div>
-        <label>Category</label>
-        <input value={form.category} onChange={e => set('category', e.target.value)} />
+      <div className="space-y-1">
+        <label className="block font-sans text-sm text-muted">Category</label>
+        <input
+          value={form.category}
+          onChange={e => set('category', e.target.value)}
+          className="w-full bg-transparent font-sans text-ink border-b border-muted/40 focus:outline-none focus-visible:border-ink py-1"
+        />
       </div>
 
-      <div>
-        <label>Status</label>
-        <select value={form.status} onChange={e => set('status', e.target.value as PostStatus)}>
+      <div className="space-y-1">
+        <label className="block font-sans text-sm text-muted">Status</label>
+        <select
+          value={form.status}
+          onChange={e => set('status', e.target.value as PostStatus)}
+          className="bg-transparent font-sans text-ink border-b border-muted/40 focus:outline-none focus-visible:ring-1 focus-visible:ring-muted rounded py-1 pr-2"
+        >
           <option value="draft">Draft</option>
           <option value="review">In Review</option>
           <option value="published">Published</option>
         </select>
       </div>
 
-      <button type="submit">Save</button>
-      <button type="button" onClick={onCancel}>Cancel</button>
+      <div className="flex gap-6 pt-2 border-t border-muted/20">
+        <button
+          type="submit"
+          className="font-sans text-sm text-ink hover:text-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ink rounded transition-colors pt-4"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="font-sans text-sm text-muted hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-muted rounded transition-colors pt-4"
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   )
 }
