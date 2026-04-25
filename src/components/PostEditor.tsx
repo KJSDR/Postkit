@@ -25,13 +25,14 @@ export function PostEditor({ post, onSave, onCancel }: Props) {
       : EMPTY
   )
   const [errors, setErrors] = useState<string[]>([])
+  const [tagsRaw, setTagsRaw] = useState(post ? post.tags.join(', ') : '')
 
   function set<K extends keyof PostFormData>(key: K, val: PostFormData[K]) {
     setForm(prev => ({ ...prev, [key]: val }))
   }
 
-  function handleTagsChange(raw: string) {
-    set('tags', parseTags(raw))
+  function handleTagsBlur() {
+    set('tags', parseTags(tagsRaw))
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -87,8 +88,9 @@ export function PostEditor({ post, onSave, onCancel }: Props) {
       <div className="space-y-1">
         <label className="block font-sans text-sm text-muted">Tags (comma-separated)</label>
         <input
-          value={form.tags.join(', ')}
-          onChange={e => handleTagsChange(e.target.value)}
+          value={tagsRaw}
+          onChange={e => setTagsRaw(e.target.value)}
+          onBlur={handleTagsBlur}
           className="w-full bg-transparent font-sans text-ink border-b border-muted/40 focus:outline-none focus-visible:border-ink py-1"
         />
       </div>
