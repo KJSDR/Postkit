@@ -1,14 +1,11 @@
 import { SearchInput } from 'postkit-ui-component-library'
+import { usePostStore } from '../store/usePosts'
 
-interface Props {
-  value: string
-  onChange: (val: string) => void
-}
-
-export function SearchBar({ value, onChange }: Props) {
+export function SearchBar() {
+  const { search, setSearch } = usePostStore()
   return (
     <div className="mb-6 font-sans text-sm text-ink">
-      <SearchInput value={value} onChange={onChange} placeholder="Search posts..." debounceMs={300} />
+      <SearchInput value={search} onChange={setSearch} placeholder="Search posts..." debounceMs={300} />
     </div>
   )
 }

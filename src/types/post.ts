@@ -1,5 +1,14 @@
 export type PostStatus = 'draft' | 'review' | 'published'
 
+export type View = 'list' | 'preview' | 'editor'
+export type SortKey = 'date' | 'title'
+export interface Filters {
+  status: PostStatus | 'all'
+  tag: string
+  sort: SortKey
+  sortDir: 'asc' | 'desc'
+}
+
 export interface Post {
   id: string
   title: string

@@ -47,3 +47,12 @@
 **Q:** Which library required the most guarding for edge case input? What did it return for empty strings?
 
 **A:** `postkit-date-status-display` needed the most guarding — `formatDate` expects a valid date string, so new posts with no `updatedAt` needed a fallback (`?? 'Not saved yet'`). `postkit-excerpt` returned an empty string for empty body — safe. `postkit-reading-time` returned a small decimal (e.g. `0.012`) for very short text — no minimum floor.
+
+
+## Extra Notes
+
+### State Management Refactor — Moving UI State into Zustand
+
+Mitchell pointed out that while posts were correctly stored in Zustand, the UI state (`search`, `filters`, `view`, `selected`) was still living as `useState` in `App.tsx` and being passed down as props to child components. He called this the "vanilla method" — the same pattern the app used before Zustand was added, where state was managed with `useState` + `useEffect` inside a custom hook. The problem with that approach is that each component calling the hook gets its own independent copy of the state rather than a shared one. He also noted the contrast: "state down component tree" (prop drilling) vs. "global state store is better."
+
+The fix was to move `view`, `selected`, `search`, and `filters` into the Zustand store alongside `posts`. `SearchBar` and `FilterSort` now call `usePostStore()` directly instead of receiving props. The `partialize` option was added to the persist middleware so only `posts` saves to localStorage — UI state correctly resets on reload. The `Filters`, `SortKey`, and `View` types were also moved to `types/post.ts` as a single source of truth.

@@ -1,25 +1,18 @@
-import { PostStatus } from '../types/post'
+import { Filters, SortKey } from '../types/post'
+import { usePostStore } from '../store/usePosts'
 
-export type SortKey = 'date' | 'title'
-
-export interface Filters {
-  status: PostStatus | 'all'
-  tag: string
-  sort: SortKey
-  sortDir: 'asc' | 'desc'
-}
+export type { SortKey, Filters }
 
 interface Props {
-  filters: Filters
   availableTags: string[]
-  onChange: (filters: Filters) => void
 }
 
 const selectClass = 'bg-transparent font-sans text-sm text-ink border-b border-muted/40 focus:outline-none focus-visible:ring-1 focus-visible:ring-muted rounded py-1 pr-2 cursor-pointer'
 
-export function FilterSort({ filters, availableTags, onChange }: Props) {
+export function FilterSort({ availableTags }: Props) {
+  const { filters, setFilters } = usePostStore()
   function set<K extends keyof Filters>(key: K, val: Filters[K]) {
-    onChange({ ...filters, [key]: val })
+    setFilters({ ...filters, [key]: val })
   }
 
   return (

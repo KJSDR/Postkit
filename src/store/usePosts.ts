@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { Post, PostFormData } from '../types/post'
+import { Post, PostFormData, View, Filters } from '../types/post'
 import { createSlugFromTitle, makeUniqueSlug } from 'postkit-slug'
 import { createExcerpt } from 'postkit-excerpt'
 import { readingTime } from 'postkit-reading-time'
@@ -34,6 +34,8 @@ function buildPost(id: string, data: PostFormData, existingSlugs: string[], crea
   }
 }
 
+const defaultFilters: Filters = { status: 'all', tag: '', sort: 'date', sortDir: 'desc' }
+
 interface PostStore {
   posts: Post[]
   createPost: (data: PostFormData) => Post | null
@@ -41,12 +43,30 @@ interface PostStore {
   deletePost: (id: string) => void
   exportAllPosts: () => string
   importAllPosts: (json: string) => boolean
+
+  view: View
+  selected: Post | null
+  search: string
+  filters: Filters
+  setView: (view: View) => void
+  setSelected: (post: Post | null) => void
+  setSearch: (search: string) => void
+  setFilters: (filters: Filters) => void
 }
 
 export const usePostStore = create<PostStore>()(
   persist(
     (set, get) => ({
       posts: [],
+
+      view: 'list' as View,
+      selected: null,
+      search: '',
+      filters: defaultFilters,
+      setView: (view) => set({ view }),
+      setSelected: (selected) => set({ selected }),
+      setSearch: (search) => set({ search }),
+      setFilters: (filters) => set({ filters }),
 
       createPost: (data) => {
         const { posts } = get()
@@ -84,6 +104,6 @@ export const usePostStore = create<PostStore>()(
         return true
       },
     }),
-    { name: 'postkit-posts' }
+    { name: 'postkit-posts', partialize: (state) => ({ posts: state.posts }) }
   )
 )

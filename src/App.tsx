@@ -1,22 +1,20 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Post, PostFormData } from './types/post'
 import { usePostStore } from './store/usePosts'
 import { SearchBar } from './components/SearchBar'
-import { FilterSort, Filters } from './components/FilterSort'
+import { FilterSort } from './components/FilterSort'
 import { PostList } from './components/PostList'
 import { PostEditor } from './components/PostEditor'
 import { PostPreview } from './components/PostPreview'
 import { searchPosts } from 'postkit-search-library'
 import { filterByStatus, filterByTag, sortByDate, sortByTitle } from 'postkit-filter-sort'
 
-type View = 'list' | 'preview' | 'editor'
-
 export function App() {
-  const { posts, createPost, updatePost, deletePost } = usePostStore()
-  const [view, setView] = useState<View>('list')
-  const [selected, setSelected] = useState<Post | null>(null)
-  const [search, setSearch] = useState('')
-  const [filters, setFilters] = useState<Filters>({ status: 'all', tag: '', sort: 'date', sortDir: 'desc' })
+  const {
+    posts, createPost, updatePost, deletePost,
+    view, setView, selected, setSelected,
+    search, filters,
+  } = usePostStore()
 
   const allTags = useMemo(
     () => Array.from(new Set(posts.flatMap(p => p.tags))).sort(),
@@ -121,8 +119,8 @@ export function App() {
             + New Post
           </button>
         </header>
-        <SearchBar value={search} onChange={setSearch} />
-        <FilterSort filters={filters} availableTags={allTags} onChange={setFilters} />
+        <SearchBar />
+        <FilterSort availableTags={allTags} />
         <PostList posts={visible} onSelect={handleSelect} />
       </div>
     </main>
