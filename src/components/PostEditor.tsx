@@ -112,7 +112,6 @@ export function PostEditor({ post, onSave, onCancel }: Props) {
           className="bg-transparent font-sans text-ink border-b border-muted/40 focus:outline-none focus-visible:ring-1 focus-visible:ring-muted rounded py-1 pr-2"
         >
           <option value="draft">Draft</option>
-          <option value="review">In Review</option>
           <option value="published">Published</option>
         </select>
       </div>

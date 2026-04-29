@@ -1,4 +1,4 @@
-export type PostStatus = 'draft' | 'review' | 'published'
+export type PostStatus = 'draft' | 'published'
 
 export type View = 'list' | 'preview' | 'editor'
 export type SortKey = 'date' | 'title'

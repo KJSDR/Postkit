@@ -1,5 +1,6 @@
 import { PostCard } from 'postkit-ui-component-library'
 import { formatDate } from 'postkit-date-status-display'
+import { formatTime } from 'postkit-reading-time'
 import { Post } from '../types/post'
 
 interface Props {
@@ -23,7 +24,7 @@ export function PostList({ posts, onSelect }: Props) {
             onClick={() => onSelect(post)}
           />
           <small className="font-sans text-sm text-muted block mt-2">
-            {formatDate(post.updatedAt)} — {post.readingTime} min read — {post.tags.map(t => `#${t}`).join(' ')}
+            {formatDate(post.updatedAt)} — {formatTime(post.readingTime)} read — {post.tags.map(t => `#${t}`).join(' ')}
           </small>
         </li>
       ))}

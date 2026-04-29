@@ -1,5 +1,6 @@
 import { StatusBadge } from 'postkit-ui-component-library'
 import { formatDate, statusToLabel } from 'postkit-date-status-display'
+import { formatTime } from 'postkit-reading-time'
 import { Post } from '../types/post'
 
 interface Props {
@@ -36,7 +37,7 @@ export function PostPreview({ post, onEdit, onBack }: Props) {
         <div className="flex gap-4">
           <dt className="text-muted w-28 shrink-0">Status</dt>
           <dd className="text-ink flex items-center gap-2">
-            <StatusBadge status={post.status as 'draft' | 'published'} size="sm" />
+            <StatusBadge status={post.status} size="sm" />
             {statusToLabel(post.status)}
           </dd>
         </div>
@@ -46,7 +47,7 @@ export function PostPreview({ post, onEdit, onBack }: Props) {
         </div>
         <div className="flex gap-4">
           <dt className="text-muted w-28 shrink-0">Reading time</dt>
-          <dd className="text-ink">{post.readingTime} min</dd>
+          <dd className="text-ink">{formatTime(post.readingTime)}</dd>
         </div>
         <div className="flex gap-4">
           <dt className="text-muted w-28 shrink-0">Date</dt>
