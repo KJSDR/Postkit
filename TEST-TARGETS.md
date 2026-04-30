@@ -36,3 +36,57 @@
 ---
 
 ## Test Targets
+ 
+### T1 — Filter by status shows only matching posts
+Behavior: Changing the status filter to 'draft' shows only draft posts in the list
+Setup: Store contains two posts — one with status 'draft', one with status 'published'
+Action: Render App, change the status select to 'draft'
+Assert:
+  - Draft post title appears in the document
+  - Published post title does NOT appear in the document
+Failure: Would catch — wrong variable passed to filterByStatus, filter not connected to store, stale useMemo
+ 
+### T2 — Search returns only matching posts
+Behavior: Typing a search query filters the list to only posts matching that query
+Setup: Store contains two posts — one titled 'Hello World', one titled 'Goodbye World'
+Action: Render App, type 'Hello' into the search input
+Assert:
+  - 'Hello World' appears in the document
+  - 'Goodbye World' does NOT appear in the document
+Failure: Would catch — search value not passed to searchPosts, searchPosts not called on store update
+ 
+### T3 — Creating a post saves it to the list
+Behavior: Filling out the editor and saving adds the new post to the post list
+Setup: Store starts empty
+Action: Render App, click New Post, fill in title and body, click Save
+Assert:
+  - The new post title appears in the post list
+  - View returns to list after save
+Failure: Would catch — validation blocking save incorrectly, createPost not updating store, view not resetting
+ 
+### T4 — Slug is unique when two posts have the same title
+Behavior: Creating two posts with the same title produces two different slugs
+Setup: Store contains one post with title 'My Post' and slug 'my-post'
+Action: Create a second post with title 'My Post'
+Assert:
+  - Second post slug is NOT 'my-post'
+  - Second post slug starts with 'my-post' (e.g. 'my-post-1' or similar)
+Failure: Would catch — makeUniqueSlug not called, existing slugs not passed correctly
+ 
+### T5 — Validation prevents saving an invalid post
+Behavior: Submitting the editor with no title shows an error and does not save
+Setup: Store starts empty
+Action: Render PostEditor, leave title blank, click Save
+Assert:
+  - An error message appears in the document
+  - No new post is added to the store
+Failure: Would catch — getPostValidationErrors not called, isPostValid not blocking createPost
+ 
+### T6 — Filter by tag shows only matching posts
+Behavior: Selecting a tag filter shows only posts that have that tag
+Setup: Store contains two posts — one tagged 'javascript', one tagged 'css'
+Action: Render App, select 'javascript' from the tag filter
+Assert:
+  - Post tagged 'javascript' appears in the document
+  - Post tagged 'css' does NOT appear in the document
+Failure: Would catch — wrong field passed to filterByTag, tag filter not wired to store
