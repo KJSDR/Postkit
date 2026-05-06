@@ -1,0 +1,12 @@
+## 1. What did you predict would need to change? What actually needed to change? Where were you wrong?
+- I predicted that posts.ts and PostPreview.tsx would need to change and also some of the tests. In actually those 3 did need changes but ALSO the usePosts.ts also needed to be changed so 4 files in total. I referenced the boundary map we did last week to get a good idea.
+## 2. Which part of your app absorbed this change most cleanly — you made the change and it just worked? What made that possible?
+- PostPreview.tsx, just needed to add one conditional on post.status and the date renders the new way. It was clean becayse the preview already recvied the full object of Post so there was nothing new to wire.
+## 3. Which part required more rework than you expected? What design decision caused that?
+- buildpost in usePosts.ts i guess. It needed a new paramter "originalPublishedAt" threaded through from updatePost which mirroring the same pattern already was use for createdAt. not very hard but still requires knowing that buildPost rebuilds the post from scratch every time. 
+## 4. How many tests broke when you first ran your suite? What did that tell you? 
+- None broke immeditaly and non after implementation. Making publishedAt be optional like we talked in class meant that existing posts and factories stayed valid without changes.
+## 5. Did any test catch a bug you would not have found otherwise? Describe it specifically.
+- Nope. The new T7 tests I added were the only coverage for publishedAt. Without them a big where publishedAt gets wiped on every update would have shipped. and would maybe show up where you would notice your publish date resetted ever time they edited.
+## 6. If this requirement had arrived on week 2 instead of week 8, would you have built anything differently? What?
+- Would made buildPost a patch function instead of full rebuild. Right now it takes createdAt and publishedAt as extra paramters just to preserve them across updates and it grows every time a new filed is added. A Patch apporahc would absorb that lcass of whange with no extra parameters. The assignment says "make the smallest change that satisfies the requirement" patching buildPost satisfies that. Refactoring to a patch approach is valid but it's a separate decision not required in class but would be how I do it
