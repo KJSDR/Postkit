@@ -17,6 +17,7 @@ export function makePost(overrides: Partial<Post> = {}): Post {
     readingTime: 1,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    publishedAt: undefined,
     ...overrides,
   }
 }

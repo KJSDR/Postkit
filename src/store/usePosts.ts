@@ -12,7 +12,7 @@ function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
 }
 
-function buildPost(id: string, data: PostFormData, existingSlugs: string[], createdAt?: string): Post {
+function buildPost(id: string, data: PostFormData, existingSlugs: string[], createdAt?: string, originalPublishedAt?: string): Post {
   const rawSlug = createSlugFromTitle(data.title)
   const slug = makeUniqueSlug(rawSlug, existingSlugs)
   const tags = removeDuplicateTags(parseTags(data.tags.join(', ')))
@@ -31,6 +31,7 @@ function buildPost(id: string, data: PostFormData, existingSlugs: string[], crea
     readingTime: readingTime(data.body),
     createdAt: createdAt ?? now,
     updatedAt: now,
+    publishedAt: data.status === 'published' ? (originalPublishedAt ?? now) : undefined,
   }
 }
 
@@ -81,7 +82,7 @@ export const usePostStore = create<PostStore>()(
         set(state => {
           const existingSlugs = state.posts.filter(p => p.id !== id).map(p => p.slug)
           const original = state.posts.find(p => p.id === id)
-          const updated = buildPost(id, data, existingSlugs, original?.createdAt)
+          const updated = buildPost(id, data, existingSlugs, original?.createdAt, original?.publishedAt)
           if (!isPostValid(updated as Parameters<typeof isPostValid>[0])) return state
           success = true
           return { posts: state.posts.map(p => (p.id === id ? updated : p)) }

@@ -22,6 +22,7 @@ export interface Post {
   readingTime: number
   createdAt: string
   updatedAt: string
+  publishedAt?: string
 }
 
 export interface PostFormData {

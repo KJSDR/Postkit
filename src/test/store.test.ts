@@ -10,6 +10,38 @@ const validPost = {
   author: 'Test Author',
 }
 
+// T7 — publishedAt is set when a post is published and preserved on update
+describe('T7 — publishedAt behavior', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    usePostStore.setState({ posts: [] })
+  })
+
+  it('publishedAt is set when post is created with status published', () => {
+    const { createPost } = usePostStore.getState()
+    const post = createPost({ ...validPost, status: 'published' })
+    expect(post).not.toBeNull()
+    expect(post!.publishedAt).toBeDefined()
+  })
+
+  it('publishedAt is undefined for draft posts', () => {
+    const { createPost } = usePostStore.getState()
+    const post = createPost(validPost)
+    expect(post!.publishedAt).toBeUndefined()
+  })
+
+  it('publishedAt is preserved when a published post is updated', () => {
+    const { createPost, updatePost } = usePostStore.getState()
+    const post = createPost({ ...validPost, status: 'published' })
+    const originalPublishedAt = post!.publishedAt
+
+    updatePost(post!.id, { ...validPost, status: 'published', title: 'Updated Title' })
+    const updated = usePostStore.getState().posts.find(p => p.id === post!.id)
+
+    expect(updated!.publishedAt).toBe(originalPublishedAt)
+  })
+})
+
 // T4 — Slug is unique when two posts have the same title
 describe('T4 — unique slug generation', () => {
   beforeEach(() => {

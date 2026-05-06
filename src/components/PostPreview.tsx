@@ -50,8 +50,14 @@ export function PostPreview({ post, onEdit, onBack }: Props) {
           <dd className="text-ink">{formatTime(post.readingTime)}</dd>
         </div>
         <div className="flex gap-4">
-          <dt className="text-muted w-28 shrink-0">Date</dt>
-          <dd className="text-ink">{formatDate(post.createdAt)}</dd>
+          <dt className="text-muted w-28 shrink-0">
+            {post.status === 'published' ? 'Published' : 'Last updated'}
+          </dt>
+          <dd className="text-ink">
+            {post.status === 'published' && post.publishedAt
+              ? formatDate(post.publishedAt)
+              : formatDate(post.updatedAt)}
+          </dd>
         </div>
         <div className="flex gap-4">
           <dt className="text-muted w-28 shrink-0">Tags</dt>
