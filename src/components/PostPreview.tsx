@@ -37,7 +37,7 @@ export function PostPreview({ post, onEdit, onBack }: Props) {
         <div className="flex gap-4">
           <dt className="text-muted w-28 shrink-0">Status</dt>
           <dd className="text-ink flex items-center gap-2">
-            <StatusBadge status={post.status} size="sm" />
+            {post.status !== 'review' && <StatusBadge status={post.status as 'draft' | 'published'} size="sm" />}
             {statusToLabel(post.status)}
           </dd>
         </div>

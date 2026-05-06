@@ -18,7 +18,7 @@ export function PostList({ posts, onSelect }: Props) {
           <PostCard
             title={post.title}
             author={post.author}
-            status={post.status as 'draft' | 'published'}
+            status={(post.status === 'review' ? 'draft' : post.status) as 'draft' | 'published'}
             rawExcerpt={post.excerpt}
             createdAt={new Date(post.createdAt)}
             onClick={() => onSelect(post)}

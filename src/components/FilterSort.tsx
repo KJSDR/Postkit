@@ -24,6 +24,7 @@ export function FilterSort({ availableTags }: Props) {
       >
         <option value="all">All statuses</option>
         <option value="draft">Draft</option>
+        <option value="review">Review</option>
         <option value="published">Published</option>
       </select>
 
