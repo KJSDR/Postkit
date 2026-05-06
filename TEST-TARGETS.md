@@ -90,3 +90,25 @@ Assert:
   - Post tagged 'javascript' appears in the document
   - Post tagged 'css' does NOT appear in the document
 Failure: Would catch — wrong field passed to filterByTag, tag filter not wired to store
+
+---
+
+## Spec Change Questions:
+
+1. What change does this requirement make to the Post type?
+  - Add a publishedAt?: string field and make it optional because only published posts would have one. and drafts and review posts would be leaved as undefined.
+2. Which files in your app will need to change?
+  - src/types/post.ts — add the field                                                                                                                                       
+  - src/store/usePosts.ts — buildPost sets publishedAt when status is 'published', preserves it on update                                                                   
+  - src/components/PostPreview.tsx — show publishedAt for published posts, updatedAt otherwise                                                                              
+  - src/test/factories.ts — add publishedAt field (optional, omit for drafts)  
+3. Which boundaries from your lesson 9 map does this change cross?
+  - State boundary: posts: Post[] — shape changes, buildPost in store writes the new field                                                                                  
+  - View boundary: PostPreview receives post: Post — display logic changes based on status                                                                                  
+  - Library boundary: usePosts.ts: isPostValid — may or may not care about the new field (need to check it doesn't reject posts with undefined publishedAt)
+4. Run your test suite right now. Which tests break immediately?
+  - Zero. Run the suite all pass. The type hasn't changed yet. 
+5. Which tests do you expect to break after you implement the change?
+  - factories.ts — zero breaks if publishedAt is optional (TypeScript fine with omitting optional fields)                                                                   
+  - No existing test covers preview date display — zero breaks there                                                                                                        
+  - Gap exposed: no test currently verifies that creating/updating a post to published sets publishedAt. Need to add one to store.test.ts.
